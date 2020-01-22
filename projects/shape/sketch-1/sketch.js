@@ -35,7 +35,7 @@ function setup() {
 }
 
 function draw() {
-  background(225);
+  background(250);
 
   // draw circle in corner displaying current color
   push();
