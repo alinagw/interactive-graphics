@@ -4,16 +4,21 @@ let cakeSize = 250;
 let drawOn;
 let currColor = 'black';
 let colors;
+let surfaceSelect;
+let colorSelect;
 
 function setup() {
   createCanvas(600, 600, WEBGL);
   angleMode(DEGREES);
+  // initialize cake texture
   cakeTexture = createGraphics(cakeSize, cakeSize);
   cakeTexture.background(255);
-
+  // initialize cake top texture
   cakeTopTexture = createGraphics(cakeSize, cakeSize);
   cakeTopTexture.background(255);
-
+  // initialize drop downs
+  initializeSelects();
+  // initialize colors
   colors = {
     red: color(220, 56, 56),
     orange: color(220, 56, 56),
@@ -30,8 +35,6 @@ function setup() {
     lightBrown: color(144, 82, 61),
     cream: color(247, 232, 211)
   }
-
-  drawOn = 'side';
 }
 
 function draw() {
@@ -42,24 +45,28 @@ function draw() {
   directionalLight(255, 255, 255, -100, 200, -1000);
   pointLight(255, 218, 101, 500, 10, 0);
   
+  // set surface to draw on and current color
+  drawOn = surfaceSelect.value();
+  currColor = colors[colorSelect.value()];
   
+  // draw cake and candle
   noStroke();
   drawCake();
   drawCandle();
 }
 
-function mouseClicked(event) {
-  console.log(event);
-}
-
 function mouseDragged() {
+  // draw ellipses on side of cake
   if (drawOn === 'side') {
     cakeTexture.noStroke();
-    cakeTexture.fill(255,0,0);
+    cakeTexture.fill(currColor);
     cakeTexture.ellipse(mouseX - width / 3, mouseY - height / 3, 20);
-  } else if (drawOn === 'top') {
+  } 
+  
+  // draw ellipses on top of cake
+  else if (drawOn === 'top') {
     cakeTopTexture.noStroke();
-    cakeTopTexture.fill(0,255,0);
+    cakeTopTexture.fill(currColor);
     cakeTopTexture.ellipse(mouseX - width / 3, mouseY - height / 3, 20);
   }
 }
@@ -104,34 +111,26 @@ function drawCandle() {
   pop();
 }
 
+function initializeSelects() {
+  // select surface to draw on
+  surfaceSelect = createSelect();
+  surfaceSelect.option("side");
+  surfaceSelect.option("top");
 
-// function preload() {
-//   img = loadImage("cat.jpg");
-// }
-
-// function setup() {
-//     createCanvas(500, 500, WEBGL);
-//     angleMode(DEGREES);
-//     cakeTexture = createGraphics(PI * 150, 150);
-//     cakeTexture.background(255);
-//   }
-  
-//   function draw() {
-//     background(220);
-//     //orbitControl();
-//     cakeTexture.fill(100);
-//     cakeTexture.noStroke();
-//     cakeTexture.ellipse(mouseX - width / 2, mouseY - height / 2, 20);
-
-//     // texture()
-    
-//     texture(cakeTexture);
-
-//     // texture(img);
-//     textureWrap();
-
-//     //noStroke();
-//     rotateX(-20);
-//     rotateY(-90);
-//     cylinder(150, 150);
-//   }
+  // select current color
+  colorSelect = createSelect();
+  colorSelect.option("red");
+  colorSelect.option("orange");
+  colorSelect.option("gold");
+  colorSelect.option("yellow");
+  colorSelect.option("green");
+  colorSelect.option("teal");
+  colorSelect.option("blue");
+  colorSelect.option("purple");
+  colorSelect.option("pink");
+  colorSelect.option("white");
+  colorSelect.option("black");
+  colorSelect.option("darkBrown");
+  colorSelect.option("lightBrown");
+  colorSelect.option("cream");
+}
