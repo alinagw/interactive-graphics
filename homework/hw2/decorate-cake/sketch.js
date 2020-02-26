@@ -1,11 +1,21 @@
-let cakeTexture;
-let cakeTopTexture;
-let cakeSize = 250;
-let drawOn;
-let currColor = 'black';
-let colors;
-let surfaceSelect;
-let colorSelect;
+/**
+ * Decorate a Cake
+ * Alina Walling
+ * 
+ * Instructions:
+ * * Draw with mouse
+ * * Select surface of cake to draw on with drop down
+ * * Change color of brush with drop down
+ */
+
+let cakeTexture;          // graphics texture for cake
+let cakeTopTexture;       // graphics texture for top of cake
+let cakeSize = 250;       // dimensions of cake
+let drawOn;               // area of cake to draw on
+let currColor = 'black';  // current brush color
+let colors;               // brush color options
+let surfaceSelect;        // select drop down for surface to draw on
+let colorSelect;          // select drop down for brush color
 
 function setup() {
   createCanvas(600, 600, WEBGL);

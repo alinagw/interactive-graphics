@@ -1,4 +1,3 @@
-
 /**
  * 3D Drawing App
  * Alina Walling
@@ -9,33 +8,42 @@
  * * Change color of brush with number keys 0 - 9
  */
 
-let strokes = [];       // array of all strokes drawn on canvas
-let points = [];        // array of vertices (points) currently being drawn
-let rotY = 0;           // current rotation around the Y axis
-let size = 600;         // canvas size
-let speed = 0.5;        // speed of rotation around Y axis
-let currColor;          // current selected drawing color
-let colors = {          // color options for drawing, RGB values mapped to key codes for numbers 0 - 9
-  48: [0, 0, 0],        // black
-  49: [220, 56, 56],    // red
-  50: [246, 98, 31],    // orange
-  51: [250, 162, 39],   // yellow-orange
-  52: [254, 204, 47],   // yellow
-  53: [179, 194, 38],   // green
-  54: [52, 190, 184],   // teal
-  55: [65, 164, 216],   // blue
-  56: [164, 99, 218],   // purple
-  57: [238, 101, 122]   // pink
+// array of all strokes drawn on canvas
+let strokes = [];
+// array of vertices (points) currently being drawn
+let points = [];
+// current rotation around the Y axis
+let rotY = 0;
+// canvas size
+let size = 600;
+// speed of canvas rotation around Y axis
+let speed = 0.5;
+// current selected drawing color
+let currColor;
+// color options for drawing
+// RGB values mapped to key codes for numbers 0 - 9
+let colors = {
+  48: [0, 0, 0],       // black
+  49: [220, 56, 56],   // red
+  50: [246, 98, 31],   // orange
+  51: [250, 162, 39],  // yellow-orange
+  52: [254, 204, 47],  // yellow
+  53: [179, 194, 38],  // green
+  54: [52, 190, 184],  // teal
+  55: [65, 164, 216],  // blue
+  56: [164, 99, 218],  // purple
+  57: [238, 101, 122]  // pink
 }
 
 function setup() {
   createCanvas(size, size, WEBGL);
   angleMode(DEGREES);
-  currColor = colors[48]; // set current color to black
+  // set current color to black
+  currColor = colors[48];
 }
 
 function draw() {
-  background(250);
+  background(245);
 
   // draw circle in corner displaying current color
   push();

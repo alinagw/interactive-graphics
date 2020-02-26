@@ -1,0 +1,9 @@
+html, body {
+  margin: 0;
+  padding: 24px;
+  font-family: 'Open Sans';
+}
+canvas {
+  display: block;
+  margin-top: 24px;
+}

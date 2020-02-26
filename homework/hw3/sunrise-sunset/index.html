@@ -1,0 +1,27 @@
+<!DOCTYPE html><html><head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8">
+
+</head>
+
+<body>
+  <h1>Sunrise Sunset</h1>
+
+  <h3>Challenge: Color Blending</h3>
+  <p>For this challenge, I wanted to experiment with color blending and discover all the different ways to blend color using p5.js. I played around with lerpColor() and hue to create different effects across my sketches. This sketch was hard... definitely a huge challenge in getting the color blending just right at different points depending on the sun's location. I created 5 different sky gradients for different times of day, and had each correspond to a mouseY position of the sun with a power function to determine the transition points. I used lerpColor() to create the individual gradients, and <i>then</i> I lerped the colors between the two gradients the sun was "in-between" depending on how close the sun was to either gradient. The whole thing used lerpColor() 3 times. Hopefully you agree that it creates a beautiful interactive color experience.</p>
+
+  <h4>Instructions:</h4>
+  <ul>
+    <li>
+      Move the mouse up and down on the canvas to move the sun and transition between the skies. Moving slowly shows more of the blending effects.
+    </li>
+    <li>
+      Hold down the space bar if you want to see the height fractions (where the gradients switch).
+    </li>
+  </ul>
+  <script src="sketch.js"></script>
+
+
+</body></html>
