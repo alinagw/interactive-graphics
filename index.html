@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -8,14 +9,100 @@
 </head>
 
 <body>
-    <h1>Alina Walling's Interactive Graphics Spring 2020</h1>
-    <h2>Projects</h2>
-    <h4>Week 2: Shapes</h4>
-    <ul>
-        <li>Sketch 1</li>
-        <li>Sketch 2</li>
-        <li>Sketch 3</li>
-    </ul>
+    <div class="container">
+        <div class="mb-4 text-center">
+            <h1 class="display-4 mb-2">Interactive Graphics</h1>
+            <h6 class="text-muted">Alina Walling • Duke University Spring 2020</h6>
+        </div>
+        <hr />
+
+        <h2 class="mb-4">Homework</h2>
+
+        <div class="card mb-4 shadow">
+            <h5 class="card-header">Homework 1: Self-Portrait</h5>
+            <div class="card-body">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="text-center">
+                    <a href="homework/hw1/self-portrait/index.html" target="_blank"
+                        class="btn btn-primary">Self-Portrait</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <h5 class="card-header">Homework 2: Shape</h5>
+            <div class="card-body">
+                <p class="card-text">I wanted to implement drawing apps in different "spaces," challenging myself to
+                    interpret what "space" means. I was interested in the drawing apps challenge, but I wanted to take
+                    it a step further. This ended up being more of a coding challenge for myself to create different,
+                    complex, and unusual spaces for users to draw shapes (or on shapes). After we experimented with
+                    simple 2D drawing apps in class, I tried to imagine what other drawing tools I could create in
+                    Processing that afford modes of drawing not traditionally offered. So I ended up testing out drawing
+                    in 3D space in two sketches, as well as a more simplistic, literal take on space for the third
+                    sketch.</p>
+                <div class="text-center">
+                    <a href="homework/hw2/3D-drawing/index.html" target="_blank" class="btn btn-primary mx-2">Draw in
+                        3D</a>
+                    <a href="homework/hw2/decorate-cake/index.html" target="_blank"
+                        class="btn btn-primary mx-2">Decorate a Cake</a>
+                    <a href="homework/hw2/constellations/index.html" target="_blank"
+                        class="btn btn-primary mx-2">Constellations</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <h5 class="card-header">Homework 3: Color</h5>
+            <div class="card-body">
+                <p class="card-text">For this challenge, I wanted to experiment with color blending and discover all the
+                    different ways to blend color using p5.js. I played around with lerpColor() and hue to create
+                    different effects across my sketches. I wanted to make all of them interactive, allowing the user to
+                    control how the colors are blended and/or how the blended colors are displayed. Some are simple and
+                    some are very complicated to get the color blending just right for the perfect color experience.</p>
+                <div class="text-center">
+                    <a href="homework/hw3/color-blender/index.html" target="_blank" class="btn btn-primary mx-2">Color
+                        Blender</a>
+                    <a href="homework/hw3/sunrise-sunset/index.html" target="_blank"
+                        class="btn btn-primary mx-2">Sunrise Sunset</a>
+                    <a href="homework/hw3/rainbow-scratch-art/index.html" target="_blank"
+                        class="btn btn-primary mx-2">Rainbow Scratch Art</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <h5 class="card-header">Homework 4: Motion</h5>
+            <div class="card-body">
+                <p class="card-text">For this challenge, I wanted to use different forms of motion and interaction to
+                    express the different states of bipolar disorder. I created sketches for depression, stability, and
+                    mania. Since the person with bipolar disorder experiences these states, I wanted the person
+                    interacting with this sketch to drive the experience of the motion. The idea is for the user to feel
+                    the emotions as a result of the interactive motion experience.</p>
+                <div class="text-center">
+                    <a href="homework/hw4/depression/index.html" target="_blank"
+                        class="btn btn-primary mx-2">Depression</a>
+                    <a href="homework/hw4/stable/index.html" target="_blank" class="btn btn-primary mx-2">Stable</a>
+                    <a href="homework/hw4/mania/index.html" target="_blank" class="btn btn-primary mx-2">Mania</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow">
+            <h5 class="card-header">Homework 6: JS Objects & Sketch Remake</h5>
+            <div class="card-body">
+                <p class="card-text">For my first sketch, I created a Fish JS object and used it to spawn fish in this
+                    fun little aquarium! For my second sketch, I decided to create my own take on <a
+                        href="https://editor.p5js.org/jacquilerner/sketches/pyaxBtRz">Jacqueline's aesthetic sketch</a>
+                    from last week.</p>
+                <div class="text-center">
+                    <a href="homework/hw6/aquarium/index.html" target="_blank" class="btn btn-primary mx-2">Aquarium</a>
+                    <a href="homework/hw6/snowman/index.html" target="_blank" class="btn btn-primary mx-2">Remake:
+                        Snowman</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
@@ -27,4 +114,5 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
 </body>
+
 </html>
