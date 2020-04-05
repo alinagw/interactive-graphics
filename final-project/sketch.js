@@ -2,9 +2,20 @@ let video;
 let poseNet;
 let pose;
 let skeleton;
+let select;
+let elements;
+let currElement;
 
 function setup() {
     createCanvas(640, 480);
+
+    elements = {
+        fire: 'red',
+        water: 'blue',
+        earth: 'green',
+        air: 'yellow'
+    }
+
     video = createCapture(VIDEO);
     video.hide();
     poseNet = ml5.poseNet(video, modelLoaded);
@@ -16,6 +27,21 @@ function draw() {
     if (pose && skeleton) {
         drawSkeleton();
     }
+}
+
+function updateElement() {
+    currElement = select.value().toLowerCase();
+}
+
+function initializeSelects() {
+    select = createSelect();
+    select.option("Fire");
+    select.option("Water");
+    select.option("Earth");
+    select.option("Air");
+    select.selected("Fire");
+    select.changed(updateElement);
+    updateElement();
 }
 
 function modelLoaded() {
@@ -30,9 +56,12 @@ function gotPoses(results) {
 }
 
 function drawSkeleton() {
+    let currColor = elements[currElement];
+
     for (let i = 0; i < pose.keypoints.length; i++) {
         let x = pose.keypoints[i].position.x;
         let y = pose.keypoints[i].position.y;
+        fill(currColor);
         ellipse(x, y, 15, 15);
     }
 
@@ -40,7 +69,7 @@ function drawSkeleton() {
         let a = skeleton[i][0];
         let b = skeleton[i][1];
         strokeWeight(2);
-        stroke(255);
+        stroke(currColor);
         line(a.position.x, a.position.y, b.position.x, b.position.y);
     }
 }
