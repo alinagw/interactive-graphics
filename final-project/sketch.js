@@ -23,7 +23,11 @@ function setup() {
 }
 
 function draw() {
-    image(video, 0, 0);
+    push();
+    translate(video.width, 0);
+    scale(-1, 1);
+
+    image(video, 0, 0, video.width, video.height);
     if (pose && skeleton) {
         drawSkeleton();
     }
