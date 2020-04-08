@@ -40,6 +40,7 @@ function draw() {
 function keyPressed() {
     if (keyCode === 32) collectData();
     else if (key === 's') brain.saveData();
+    else if (key === 't') trainModel();
 }
 
 function modelLoaded() {
@@ -105,4 +106,18 @@ function drawSkeleton() {
         stroke(255);
         line(a.position.x, a.position.y, b.position.x, b.position.y);
     }
+}
+
+function trainModel() {
+    brain.loadData("fire-poses.json", dataReady);
+}
+
+function dataReady() {
+    brain.normalizeData();
+    brain.train({epochs: 50}, finished);
+}
+
+function finished() {
+    console.log("model finished");
+    brain.save();
 }
