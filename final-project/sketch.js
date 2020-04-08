@@ -21,23 +21,9 @@ function setup() {
     video.hide();
     poseNet = ml5.poseNet(video, poseNetLoaded);
     poseNet.on('pose', gotPoses);
-
-    let options = {
-        inputs: 34,
-        outputs: ["label"],
-        task: "classification",
-        debug: true
-    }
-
-    brain = ml5.neuralNetwork(options);
-    const modelInfo = {
-        model: 'models/fire/model.json',
-        metadata: 'models/fire/model_meta.json',
-        weights: 'models/fire/model.weights.bin',
-    };
-    brain.load(modelInfo, modelLoaded);
-
     initializeSelect();
+    initializeBrain();
+    
 }
 
 function draw() {
@@ -50,6 +36,36 @@ function draw() {
     }
 }
 
+/**
+ * BRAIN
+ */
+
+function initializeBrain() {
+    let options = {
+        inputs: 34,
+        outputs: ["label"],
+        task: "classification",
+        debug: true
+    }
+
+    brain = ml5.neuralNetwork(options);
+    loadBrainModel();
+}
+
+function loadBrainModel() {
+    let modelInfo = {
+        model: 'models/' + currElement + '/model.json',
+        metadata: 'models/' + currElement + '/model_meta.json',
+        weights: 'models/' + currElement + '/model.weights.bin',
+    }
+    brain.load(modelInfo, modelLoaded);
+}
+
+function modelLoaded() {
+    console.log(currElement + " model ready!");
+    classifyPose();
+}
+
 function classifyPose() {
     if (pose) {
         let inputs = [];
@@ -59,42 +75,24 @@ function classifyPose() {
             inputs.push(x);
             inputs.push(y);
         }
-        brain.classify(inputs, gotResult);
+        brain.classify(inputs, gotClassification);
     } else {
         setTimeout(classifyPose, 100);
     }
 }
 
-function gotResult(error, results) {
-    console.log(results);
+function gotClassification(error, results) {
+    console.log(results[0].label);
     classifyPose();
 }
 
-function updateElement() {
-    currElement = select.value().toLowerCase();
-}
-
-function initializeSelect() {
-    select = createSelect();
-    select.option("Fire");
-    select.option("Water");
-    select.option("Earth");
-    select.option("Air");
-    select.selected("Fire");
-    select.changed(updateElement);
-    updateElement();
-}
+/**
+ * POSENET
+ */
 
 function poseNetLoaded() {
     console.log("PoseNet ready!");
 }
-
-function modelLoaded() {
-    console.log("Model ready!");
-    classifyPose();
-}
-
-
 
 function gotPoses(results) {
     if (results.length > 0) {
@@ -120,4 +118,25 @@ function drawSkeleton() {
         stroke(currColor);
         line(a.position.x, a.position.y, b.position.x, b.position.y);
     }
+}
+
+
+/** 
+ * DOM
+ */
+
+function initializeSelect() {
+    select = createSelect();
+    select.option("Fire");
+    select.option("Water");
+    select.option("Earth");
+    select.option("Air");
+    select.selected("Fire");
+    select.changed(changeElement);
+    changeElement();
+}
+
+function changeElement() {
+    currElement = select.value().toLowerCase();
+    loadBrainModel();
 }
