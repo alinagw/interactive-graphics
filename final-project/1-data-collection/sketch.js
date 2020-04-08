@@ -67,9 +67,13 @@ function gotPoses(results) {
 
 function initializeSelect() {
     select = createSelect();
-    select.option("Pose 1");
-    select.option("Pose 2");
-    select.selected("Pose 1");
+    for (let i = 1; i <= 5; i++) {
+        select.option("Fire Pose " + i);
+        select.option("Water Pose " + i);
+        select.option("Earth Pose " + i);
+        select.option("Air Pose " + i);
+    }
+    select.selected("Fire Pose 1");
     select.changed(updateTrainingPose);
     updateTrainingPose();
 }
@@ -79,7 +83,7 @@ function updateTrainingPose() {
 }
 
 async function collectData() {
-    await new Promise((resolve, reject) => setTimeout(resolve, 5000));
+    await new Promise((resolve, reject) => setTimeout(resolve, 10000));
     state = "collecting";
     console.log(state);
     await new Promise((resolve, reject) => setTimeout(resolve, 10000));
