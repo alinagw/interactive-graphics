@@ -5,6 +5,7 @@ let skeleton;
 let select;
 let elements;
 let currElement;
+let brain;
 
 function setup() {
     createCanvas(640, 480);
@@ -18,12 +19,28 @@ function setup() {
 
     video = createCapture(VIDEO);
     video.hide();
-    poseNet = ml5.poseNet(video, modelLoaded);
+    poseNet = ml5.poseNet(video, poseNetLoaded);
     poseNet.on('pose', gotPoses);
+
+    let options = {
+        inputs: 34,
+        outputs: ["label"],
+        task: "classification",
+        debug: true
+    }
+
+    brain = ml5.neuralNetwork(options);
+    const modelInfo = {
+        model: 'models/fire/model.json',
+        metadata: 'models/fire/model_meta.json',
+        weights: 'models/fire/model.weights.bin',
+    };
+    brain.load(modelInfo, modelLoaded);
+
+    initializeSelect();
 }
 
 function draw() {
-    push();
     translate(video.width, 0);
     scale(-1, 1);
 
@@ -33,11 +50,31 @@ function draw() {
     }
 }
 
+function classifyPose() {
+    if (pose) {
+        let inputs = [];
+        for (let i = 0; i < pose.keypoints.length; i++) {
+            let x = pose.keypoints[i].position.x;
+            let y = pose.keypoints[i].position.y;
+            inputs.push(x);
+            inputs.push(y);
+        }
+        brain.classify(inputs, gotResult);
+    } else {
+        setTimeout(classifyPose, 100);
+    }
+}
+
+function gotResult(error, results) {
+    console.log(results);
+    classifyPose();
+}
+
 function updateElement() {
     currElement = select.value().toLowerCase();
 }
 
-function initializeSelects() {
+function initializeSelect() {
     select = createSelect();
     select.option("Fire");
     select.option("Water");
@@ -48,9 +85,16 @@ function initializeSelects() {
     updateElement();
 }
 
-function modelLoaded() {
+function poseNetLoaded() {
     console.log("PoseNet ready!");
 }
+
+function modelLoaded() {
+    console.log("Model ready!");
+    classifyPose();
+}
+
+
 
 function gotPoses(results) {
     if (results.length > 0) {
