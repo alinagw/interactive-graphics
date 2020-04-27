@@ -56,9 +56,9 @@ function draw() {
     // background(255);
 
     image(video, 0, 0, video.width, video.height);
-    // if (pose && skeleton) {
-    //     drawSkeleton();
-    // }
+    if (pose && skeleton) {
+        drawSkeleton();
+    }
 
     // if (pose) {
     //     let leftWrist = pose.leftWrist;
@@ -74,34 +74,34 @@ function draw() {
     fires[0].display();
     fires[1].display();
 
-    // if (currPose === "Fire Pose 1") {
-    //     fires[0].updateOrigin(createVector(pose.leftWrist.x, pose.leftWrist.y));
-    //     fires[1].updateOrigin(createVector(pose.rightWrist.x, pose.rightWrist.y));
+    if (currPose === "Fire Pose 1") {
+        fires[0].updateOrigin(createVector(pose.leftWrist.x, pose.leftWrist.y));
+        fires[1].updateOrigin(createVector(pose.rightWrist.x, pose.rightWrist.y));
 
-    //     for (let i = 0; i < 2; i++) {
-    //         fires[0].addParticle();
-    //         fires[1].addParticle();
-    //     }
-    // } 
+        for (let i = 0; i < 2; i++) {
+            fires[0].addParticle();
+            fires[1].addParticle();
+        }
+    } 
     
-    // if (currPose === "Earth Pose 1") {
-    //     push();
-    //     strokeWeight(10);
-    //     colorMode(HSL);
-    //     stroke(130, 100, 25);
-    //     translate(pose.leftWrist.x,height);
-    //     // Draw a line 120 pixels
+    else if (currPose === "Earth Pose 1") {
+        push();
+        strokeWeight(10);
+        colorMode(HSL);
+        stroke(130, 100, 25);
+        translate(pose.leftWrist.x,height);
+        // Draw a line 120 pixels
         
-    //     line(0,0,0,-(height-lerp(pose.leftWrist.y, height, 0.33)));
-    //     // Move to the end of that line
-    //     translate(0,-(height-lerp(pose.leftWrist.y, height, 0.33)));
-    //     let branches = map(height - pose.leftWrist.y, 0, height, 10, 150);
-    //     tree.startBranch(branches);
-    //     pop();
-    //     // rect(pose.leftWrist.x, pose.leftWrist.y, 20, height - pose.leftWrist.y);
-    // } 
+        line(0,0,0,-(height-lerp(pose.leftWrist.y, height, 0.33)));
+        // Move to the end of that line
+        translate(0,-(height-lerp(pose.leftWrist.y, height, 0.33)));
+        let branches = map(height - pose.leftWrist.y, 0, height, 10, 150);
+        tree.startBranch(branches);
+        pop();
+        // rect(pose.leftWrist.x, pose.leftWrist.y, 20, height - pose.leftWrist.y);
+    } 
     
-    if (currPose === "Air Pose 1") {
+    else if (currPose === "Air Pose 1") {
        
         fill(0, 0, 255);
         let top = pose.rightWrist.y;
