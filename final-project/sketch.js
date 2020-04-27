@@ -8,7 +8,9 @@ let currElement;
 let brain;
 let fires = [];
 let flameTexture;
+let tree;
 let currPose = "";
+// let airball;
 
 function preload() {
     flameTexture = loadImage('assets/flame-texture.png');
@@ -16,6 +18,8 @@ function preload() {
 
 function setup() {
     createCanvas(640, 480);
+    angleMode(DEGREES);
+    
 
     elements = {
         fire: 'red',
@@ -28,11 +32,15 @@ function setup() {
     video.hide();
     poseNet = ml5.poseNet(video, poseNetLoaded);
     poseNet.on('pose', gotPoses);
-    initializeSelect();
+    // initializeSelect();
     initializeBrain();
 
-    fires.push(new ParticleSystem(createVector(0, 0), flameTexture));
-    fires.push(new ParticleSystem(createVector(0, 0), flameTexture));
+    fires.push(new FireParticleSystem(createVector(0, 0), flameTexture));
+    fires.push(new FireParticleSystem(createVector(0, 0), flameTexture));
+
+    tree = new Tree(10);
+    // airball = new AirBall(0, 0, 0, 0);
+    // airball.addEllipse();
 
     // ps = new ParticleSystem(createVector(width / 2, height - 50), flameTexture);
 
@@ -43,14 +51,14 @@ function draw() {
     scale(-1, 1);
 
 
-    
+
 
     // background(255);
 
     image(video, 0, 0, video.width, video.height);
-    if (pose && skeleton) {
-        drawSkeleton();
-    }
+    // if (pose && skeleton) {
+    //     drawSkeleton();
+    // }
 
     // if (pose) {
     //     let leftWrist = pose.leftWrist;
@@ -64,25 +72,81 @@ function draw() {
     // }
 
     fires[0].display();
-        fires[1].display();
+    fires[1].display();
 
-    if (currPose === "Fire Pose 1") {
-        fires[0].updateOrigin(createVector(pose.leftWrist.x, pose.leftWrist.y));
-        fires[1].updateOrigin(createVector(pose.rightWrist.x, pose.rightWrist.y));
+    // if (currPose === "Fire Pose 1") {
+    //     fires[0].updateOrigin(createVector(pose.leftWrist.x, pose.leftWrist.y));
+    //     fires[1].updateOrigin(createVector(pose.rightWrist.x, pose.rightWrist.y));
+
+    //     for (let i = 0; i < 2; i++) {
+    //         fires[0].addParticle();
+    //         fires[1].addParticle();
+    //     }
+    // } 
+    
+    // if (currPose === "Earth Pose 1") {
+    //     push();
+    //     strokeWeight(10);
+    //     colorMode(HSL);
+    //     stroke(130, 100, 25);
+    //     translate(pose.leftWrist.x,height);
+    //     // Draw a line 120 pixels
         
-        for (let i = 0; i < 2; i++) {
-            fires[0].addParticle();
-            fires[1].addParticle();
-        }
-    } else if (currPose === "Earth Pose 1") {
-        fill(0, 255, 0);
-        rect(pose.leftWrist.x, pose.leftWrist.y, 20, height - pose.leftWrist.y);
-    } else if (currPose === "Air Pose 1") {
+    //     line(0,0,0,-(height-lerp(pose.leftWrist.y, height, 0.33)));
+    //     // Move to the end of that line
+    //     translate(0,-(height-lerp(pose.leftWrist.y, height, 0.33)));
+    //     let branches = map(height - pose.leftWrist.y, 0, height, 10, 150);
+    //     tree.startBranch(branches);
+    //     pop();
+    //     // rect(pose.leftWrist.x, pose.leftWrist.y, 20, height - pose.leftWrist.y);
+    // } 
+    
+    if (currPose === "Air Pose 1") {
+       
         fill(0, 0, 255);
+        let top = pose.rightWrist.y;
+        let bottom = pose.leftWrist.y;
         let centerX = (lerp(pose.leftElbow.x, pose.leftWrist.x, 0.5) + lerp(pose.rightElbow.x, pose.rightWrist.x, 0.5)) / 2;
         let centerY = lerp(pose.rightWrist.y, pose.leftWrist.y, 0.5);
         let radius = pose.leftWrist.y - pose.rightWrist.y;
+
+        // airball.updateInfo(radius, centerX, pose.rightWrist.y, pose.leftWrist.y);
+        // airball.display();
+        noStroke();
+        push();
+        colorMode(HSL);
+        fill(200, 100, 90);
         ellipse(centerX, centerY, radius);
+        pop();
+        for (let i = 1; i <= 30; i++) {
+            let rad = radius;
+            // if (i <= 15) rad = map(log(i) + 1, 1, 2.2, radius/4, radius);
+            // else if (i >= 16) rad = map(log(30 - i) + 1, 1, 2.15, radius, radius/4);
+            
+            // let deg;
+            // if (i <= 15) deg = map(i, 1, 15, 0, PI);
+            // else if (i >= 16) deg = map(i, 16, 30, PI, 0);
+            // rad = sin(deg) * radius * 10;
+            
+            if (i < 14) rad = map(i, 1, 13, radius / 2, radius);
+            else if (i > 16) rad = map(i, 17, 30, radius, radius / 2);
+            let y = lerp(pose.rightWrist.y, pose.leftWrist.y, i / 30);
+            push();
+            colorMode(HSL);
+            blendMode(OVERLAY);
+            // let h, s, l;
+            // if (frameCount % 100 === 0) {
+                let h = round(random(185, 210));
+                let s = round(random(75, 100));
+                let l = round(random(50, 80));
+            // }
+            
+            fill(h, s, l);
+            ellipse(centerX, y, rad, 30);
+            pop();
+        }
+
+        
     }
 }
 
@@ -141,7 +205,7 @@ function gotClassification(error, results) {
     // if (results[0].label === "Fire Pose 1") {
     //     console.log(results[0].label);
     //     currPose = results[0].label;
-        
+
     // }
     // else { 
     //     currPose = "";
@@ -168,11 +232,11 @@ function gotPoses(results) {
 
 function drawSkeleton() {
     let currColor = elements[currElement];
-
+    noStroke();
     for (let i = 0; i < pose.keypoints.length; i++) {
         let x = pose.keypoints[i].position.x;
         let y = pose.keypoints[i].position.y;
-        fill(currColor);
+        fill(255);
         ellipse(x, y, 15, 15);
     }
 
@@ -180,7 +244,7 @@ function drawSkeleton() {
         let a = skeleton[i][0];
         let b = skeleton[i][1];
         strokeWeight(2);
-        stroke(currColor);
+        stroke(255);
         line(a.position.x, a.position.y, b.position.x, b.position.y);
     }
 }
@@ -203,127 +267,4 @@ function initializeSelect() {
 
 function changeElement() {
     currElement = select.value().toLowerCase();
-}
-
-
-/**
- * PARTICLE SYSTEM
- */
-class ParticleSystem {
-    constructor(origin, img) {
-        this.particles = [];
-        this.origin = origin.copy();
-        this.img = img;
-    }
-
-    updateOrigin(origin) {
-        this.origin = origin.copy();
-    }
-
-    addParticle() {
-        this.particles.push(new Particle(this.origin.x, this.origin.y, this.img));
-    }
-
-    display() {
-        let len = this.particles.length;
-
-        for (let i = len - 1; i >= 0; i--) {
-            let particle = this.particles[i];
-            particle.run();
-
-            if (particle.isDead()) {
-                this.particles.splice(i, 1);
-            }
-        }
-
-    }
-}
-
-class Particle {
-    // decrease size, alpha
-    // move y upward 
-    // x side to side but decreasing towards center
-    // pos between two points
-    // random hue/sat/bright
-
-
-
-    constructor(x, y, img) {
-        this.pos = createVector(random(x - 20, x + 20), y);
-        let vx = randomGaussian() * 0.3;
-        let vy = randomGaussian() * 0.5 - 1;
-        this.vel = createVector(vx, vy);
-        // this.acc = createVector(0.1, this.);
-
-        this.life = round(random(50, 150));
-        this.size = random(30, 50);
-        this.alpha = 255;
-        
-        // let xDiff = abs(x - this.pos.x);
-        let xDiff = log(map(abs(x - this.pos.x), 0, 20, 0.1, 10)) + 1;
-        this.h = round(map(xDiff, 0, 2, 50, 0));
-        this.s = floor(random(90, 100));
-        this.l = round(map(xDiff, 0, 1, 70, 50));
-        // this.flameColor = color('hsl(' + h + ', ' + s + '%, ' + l + '%)');
-        
-        this.texture = img;
-
-        if (random(100) > 95) {
-            this.life += 10;
-            this.spark = true;
-        }
-
-    }
-
-    update() {
-        // this.vel.x += (random(0, 200) - 100) / 2000;
-        this.vel.y -= 1/this.life;
-        // this.vel.y = -2*noise(this.pos.x/10, this.pos.y/10);
-	    this.vel.x = 5*noise(this.pos.x/2, sin(this.pos.y/10), 100*this.vel.x)-2.35;
-        this.pos.add(this.vel);
-        this.alpha *= 0.96;
-        // this.flameColor.setAlpha(this.alpha);
-        
-        this.life *= 0.96;
-        this.size -= 0.5;
-        
-        // this.life = this.life * 0.95 - 0.3;
-        // this.size -= 2;
-        // this.alpha *= 0.95;
-        // let vy = -2*noise(this.pos.x/50, this.pos.y/50);
-        // let vx = 5*noise(this.pos.x/2, sin(this.pos.y/10), 100*this.vel.vx)-2.35;
-        // this.vel = createVector(vx, vy);
-    }
-
-    isDead() {
-        return this.life <= 5 || this.alpha <= 1 || this.size <= 1;
-    }
-
-    render() {
-        if (this.spark) {
-            push();
-            strokeWeight(2);
-            stroke(255, 255, 0);
-            point(this.pos);
-            pop();
-        } else {
-            push();
-            colorMode(HSL);
-            blendMode(ADD);
-            noStroke();
-            fill(this.h, 100, this.l, this.alpha);
-            ellipse(this.pos.x, this.pos.y, this.size);
-            // imageMode(CENTER);
-            // tint(this.h, 100, this.l, this.alpha);
-            // image(this.texture, this.pos.x, this.pos.y, this.size, this.size);
-            pop();
-        }
-        
-    }
-
-    run() {
-        this.update();
-        this.render();
-    }
-
 }
