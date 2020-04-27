@@ -67,7 +67,6 @@ function draw() {
         fires[1].display();
 
     if (currPose === "Fire Pose 1") {
-        console.log("hey");
         fires[0].updateOrigin(createVector(pose.leftWrist.x, pose.leftWrist.y));
         fires[1].updateOrigin(createVector(pose.rightWrist.x, pose.rightWrist.y));
         
@@ -75,8 +74,15 @@ function draw() {
             fires[0].addParticle();
             fires[1].addParticle();
         }
-
-        
+    } else if (currPose === "Earth Pose 1") {
+        fill(0, 255, 0);
+        rect(pose.leftWrist.x, pose.leftWrist.y, 20, height - pose.leftWrist.y);
+    } else if (currPose === "Air Pose 1") {
+        fill(0, 0, 255);
+        let centerX = (lerp(pose.leftElbow.x, pose.leftWrist.x, 0.5) + lerp(pose.rightElbow.x, pose.rightWrist.x, 0.5)) / 2;
+        let centerY = lerp(pose.rightWrist.y, pose.leftWrist.y, 0.5);
+        let radius = pose.leftWrist.y - pose.rightWrist.y;
+        ellipse(centerX, centerY, radius);
     }
 }
 
@@ -98,9 +104,12 @@ function initializeBrain() {
 
 function loadBrainModel() {
     let modelInfo = {
-        model: 'models/' + currElement + '/model.json',
-        metadata: 'models/' + currElement + '/model_meta.json',
-        weights: 'models/' + currElement + '/model.weights.bin',
+        // model: 'models/' + currElement + '/model.json',
+        // metadata: 'models/' + currElement + '/model_meta.json',
+        // weights: 'models/' + currElement + '/model.weights.bin',
+        model: 'models/model.json',
+        metadata: 'models/model_meta.json',
+        weights: 'models/model.weights.bin'
     }
     brain.load(modelInfo, modelLoaded);
 }
@@ -127,15 +136,17 @@ function classifyPose() {
 
 function gotClassification(error, results) {
     // && results[0].confidence > 0.8
-    if (results[0].label === "Fire Pose 1") {
-        console.log(results[0].label);
-        currPose = results[0].label;
+    console.log(results[0].label);
+    currPose = results[0].label;
+    // if (results[0].label === "Fire Pose 1") {
+    //     console.log(results[0].label);
+    //     currPose = results[0].label;
         
-    }
-    else { 
-        currPose = "";
-        // fires = [];
-     }
+    // }
+    // else { 
+    //     currPose = "";
+    //     // fires = [];
+    //  }
     classifyPose();
 }
 

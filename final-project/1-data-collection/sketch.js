@@ -74,7 +74,8 @@ function initializeSelect() {
         select.option("Earth Pose " + i);
         select.option("Air Pose " + i);
     }
-    select.selected("Fire Pose 1");
+    select.option("Neutral");
+    select.selected("Neutral");
     select.changed(updateTrainingPose);
     updateTrainingPose();
 }
@@ -109,7 +110,7 @@ function drawSkeleton() {
 }
 
 function trainModel() {
-    brain.loadData("fire-poses.json", dataReady);
+    brain.loadData("poses.json", dataReady);
 }
 
 function dataReady() {
