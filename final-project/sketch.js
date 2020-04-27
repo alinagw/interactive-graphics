@@ -6,8 +6,9 @@ let select;
 let elements;
 let currElement;
 let brain;
-let ps;
+let fires = [];
 let flameTexture;
+let currPose = "";
 
 function preload() {
     flameTexture = loadImage('assets/flame-texture.png');
@@ -30,7 +31,10 @@ function setup() {
     initializeSelect();
     initializeBrain();
 
-    ps = new ParticleSystem(createVector(width / 2, height - 50), flameTexture);
+    fires.push(new ParticleSystem(createVector(0, 0), flameTexture));
+    fires.push(new ParticleSystem(createVector(0, 0), flameTexture));
+
+    // ps = new ParticleSystem(createVector(width / 2, height - 50), flameTexture);
 
 }
 
@@ -39,24 +43,40 @@ function draw() {
     scale(-1, 1);
 
 
-    for (let i = 0; i < 2; i++) {
-        ps.addParticle();
-    }
+    
 
-    background(255);
+    // background(255);
 
     image(video, 0, 0, video.width, video.height);
-    ps.display();
     if (pose && skeleton) {
         drawSkeleton();
     }
 
-    if (pose) {
-        let leftWrist = pose.leftWrist;
-        if (leftWrist.confidence > 0.25) {
-            // ps.updateOrigin(createVector(leftWrist.x, leftWrist.y));
-            // ps.display();
+    // if (pose) {
+    //     let leftWrist = pose.leftWrist;
+    //     if (leftWrist.confidence > 0.25) {
+    //         ps.updateOrigin(createVector(leftWrist.x, leftWrist.y + 10));
+    //         for (let i = 0; i < 2; i++) {
+    //             ps.addParticle();
+    //         }
+    //         ps.display();
+    //     }
+    // }
+
+    fires[0].display();
+        fires[1].display();
+
+    if (currPose === "Fire Pose 1") {
+        console.log("hey");
+        fires[0].updateOrigin(createVector(pose.leftWrist.x, pose.leftWrist.y));
+        fires[1].updateOrigin(createVector(pose.rightWrist.x, pose.rightWrist.y));
+        
+        for (let i = 0; i < 2; i++) {
+            fires[0].addParticle();
+            fires[1].addParticle();
         }
+
+        
     }
 }
 
@@ -106,9 +126,16 @@ function classifyPose() {
 }
 
 function gotClassification(error, results) {
-    // if (results[0].label === "Fire Pose 1") {
+    // && results[0].confidence > 0.8
+    if (results[0].label === "Fire Pose 1") {
         console.log(results[0].label);
-    // }
+        currPose = results[0].label;
+        
+    }
+    else { 
+        currPose = "";
+        // fires = [];
+     }
     classifyPose();
 }
 
@@ -272,12 +299,12 @@ class Particle {
             push();
             colorMode(HSL);
             blendMode(ADD);
-            // noStroke();
-            // fill(this.h, 100, this.l, this.alpha);
-            // ellipse(this.pos.x, this.pos.y, this.size);
-            imageMode(CENTER);
-            tint(this.h, 100, this.l, this.alpha);
-            image(this.texture, this.pos.x, this.pos.y, this.size, this.size);
+            noStroke();
+            fill(this.h, 100, this.l, this.alpha);
+            ellipse(this.pos.x, this.pos.y, this.size);
+            // imageMode(CENTER);
+            // tint(this.h, 100, this.l, this.alpha);
+            // image(this.texture, this.pos.x, this.pos.y, this.size, this.size);
             pop();
         }
         
